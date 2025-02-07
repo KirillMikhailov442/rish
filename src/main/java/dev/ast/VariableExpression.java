@@ -10,7 +10,7 @@ public class VariableExpression implements Expression{
     }
 
     @Override
-    public double eval() {
+    public Value eval() {
         if (!Variable.isExists(name)) throw new RuntimeException(String.format("Variable #%s# does not exists", name));
         return Variable.get(name);
     }

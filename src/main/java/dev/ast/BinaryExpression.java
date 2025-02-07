@@ -11,14 +11,36 @@ public class BinaryExpression implements  Expression{
     }
 
     @Override
-    public double eval() {
-        switch (operation){
-            case '+': return expression1.eval() + expression2.eval();
-            case '-': return expression1.eval() - expression2.eval();
-            case '/': return expression1.eval() / expression2.eval();
-            case '*': return expression1.eval() * expression2.eval();
-            default: return expression1.eval() + expression2.eval();
+    public Value eval() {
+        final Value value1 = expression1.eval();
+        final Value value2 = expression2.eval();
 
+        if(value1 instanceof StringValue){
+            final String string1 = value1.asString();
+            final String string2 = value2.asString();
+
+            switch (operation){
+                case '+': return new StringValue(string1 + string2);
+                case '*':
+                    final int iterations = (int) value2.asDouble();
+                    final StringBuilder buffer = new StringBuilder();
+
+                    for (int i = 0; i < iterations; i++) {
+                        buffer.append(string1);
+                    }
+                    return new StringValue(buffer.toString());
+            }
+        }
+
+        final double num1 = value1.asDouble();
+        final double num2 = value2.asDouble();
+
+        switch (operation){
+            case '+': return new NumberValue(num1 + num2);
+            case '-': return new NumberValue(num1 - num2);
+            case '/': return new NumberValue(num1 / num2);
+            case '*': return new NumberValue(num1 * num2);
+            default: return new NumberValue(num1 + num2);
         }
     }
 

@@ -8,10 +8,15 @@ public enum TokenType {
     SLASH,
     EQUALS,
 
+    //keywords
+    PRINT,
+    INPUT,
+
     LPAREN,
     RPAREN,
 
     WORD,
+    TEXT,
 
     EOF
 }

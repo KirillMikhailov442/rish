@@ -10,11 +10,11 @@ public class UnaryExpression implements Expression{
     }
 
     @Override
-    public double eval() {
+    public Value eval() {
         switch (operation){
-            case '-': return -expression1.eval();
+            case '-': return new NumberValue(-expression1.eval().asDouble());
             case '+':
-            default: return expression1.eval();
+            default: return new NumberValue(expression1.eval().asDouble());
 
         }
     }
