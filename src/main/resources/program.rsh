@@ -1,3 +1,7 @@
-my_str = "Hello " + "world"
-print my_str * 2
-print "Number PI = " + PI
+input = 3
+if input = 1
+print "This is number 1"
+if input = 2
+print "This is number 2"
+else
+print "This is not number 1 and 2"

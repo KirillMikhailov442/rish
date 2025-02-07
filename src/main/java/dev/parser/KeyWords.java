@@ -10,6 +10,8 @@ public class KeyWords {
         keyWords = new HashMap<>();
         keyWords.put("INPUT", "input");
         keyWords.put("PRINT", "print");
+        keyWords.put("IF", "if");
+        keyWords.put("ELSE", "else");
     }
 
     public static boolean isExists(String key){

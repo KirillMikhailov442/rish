@@ -19,11 +19,11 @@ public class Main {
         URI uri = Objects.requireNonNull(Main.class.getClassLoader().getResource("program.rsh")).toURI();
         String code = Files.readString(Paths.get(uri));
 
+        System.out.println("\n============TOKENS============\n");
         List<Token> tokens = new Lexer(code).tokenize();
         for (Token token: tokens){
             System.out.println(token.toString());
         }
-        System.out.println("\n==============================\n");
         List<Statement> statements = new Parser(tokens).parse();
 
         System.out.println("\n============OUTPUT============\n");

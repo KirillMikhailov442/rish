@@ -7,10 +7,14 @@ public enum TokenType {
     STAR,
     SLASH,
     EQUALS,
+    LT,
+    GT,
 
     //keywords
     PRINT,
     INPUT,
+    IF,
+    ELSE,
 
     LPAREN,
     RPAREN,

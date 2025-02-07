@@ -9,12 +9,13 @@ public class Lexer {
     int length;
     int position;
 
-    static final String OPERATOR_CHARS = "+-*/()=";
+    static final String OPERATOR_CHARS = "+-*/()=<>";
     static final TokenType[] OPERATOR_TOKENS = {
             TokenType.PLUS, TokenType.MINUS,
             TokenType.STAR, TokenType.SLASH,
             TokenType.LPAREN, TokenType.RPAREN,
-            TokenType.EQUALS
+            TokenType.EQUALS, TokenType.LT,
+            TokenType.GT
     };
 
     public Lexer(String input){
@@ -93,7 +94,17 @@ public class Lexer {
 
         if(buffer.toString().equals(KeyWords.get("PRINT"))){
             addToken(TokenType.PRINT);
-        }else{
+        }
+
+        else if(buffer.toString().equals(KeyWords.get("IF"))){
+            addToken(TokenType.IF);
+        }
+
+        else if(buffer.toString().equals(KeyWords.get("ELSE"))){
+            addToken(TokenType.ELSE);
+        }
+
+        else{
             addToken(TokenType.WORD, buffer.toString());
         }
     }

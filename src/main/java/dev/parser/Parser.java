@@ -29,6 +29,10 @@ public class Parser {
             return new PrintStatement(expression());
         }
 
+        if(match(TokenType.IF)){
+            return ifElse();
+        }
+
         return assignmentStatement();
     }
 
@@ -43,8 +47,45 @@ public class Parser {
 
     }
 
+    Statement ifElse(){
+        final Expression condition = expression();
+        final Statement ifStatement = statement();
+        final Statement elseStatement;
+
+        if(match(TokenType.ELSE)){
+            elseStatement = statement();
+        }else{
+            elseStatement = null;
+        }
+
+        return new IfStatement(ifStatement, elseStatement, condition);
+
+    }
+
     public Expression expression(){
-        return additive();
+        return condition();
+    }
+
+    public Expression condition(){
+        Expression result = additive();
+        while (true){
+            if(match(TokenType.EQUALS)){
+                result = new ConditionalExpression(result, additive(), '=');
+                continue;
+            }
+
+            else if(match(TokenType.LT)){
+                result = new ConditionalExpression(result, additive(), '<');
+                continue;
+            }
+
+            else if(match(TokenType.GT)){
+                result = new ConditionalExpression(result, additive(), '>');
+                continue;
+            }
+            break;
+        }
+        return result;
     }
 
     public Expression additive(){
