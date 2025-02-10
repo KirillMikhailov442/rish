@@ -1,6 +1,10 @@
 package dev.parser;
 
-import dev.ast.*;
+import dev.ast.expressions.*;
+import dev.ast.statements.AssignmentStatement;
+import dev.ast.statements.IfStatement;
+import dev.ast.statements.PrintStatement;
+import dev.ast.statements.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,7 @@ public class Parser {
         return assignmentStatement();
     }
 
-    Statement assignmentStatement(){
+    private Statement assignmentStatement(){
         final Token current = get(0);
         if(match(TokenType.WORD) && get(0).getType() == TokenType.EQUALS){
             final String variable = current.getText();
@@ -47,7 +51,7 @@ public class Parser {
 
     }
 
-    Statement ifElse(){
+    private Statement ifElse(){
         final Expression condition = expression();
         final Statement ifStatement = statement();
         final Statement elseStatement;
@@ -62,27 +66,67 @@ public class Parser {
 
     }
 
-    public Expression expression(){
-        return condition();
+    private Expression expression(){
+        return logicalOr();
     }
 
-    public Expression condition(){
+    private Expression logicalOr(){
+        Expression result = logicalAnd();
+
+        while (true){
+            if(match(TokenType.BARBAR)){
+                result = new ConditionalExpression(result, logicalAnd(), ConditionalExpression.Operator.OR);
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+    private Expression logicalAnd(){
+        Expression result = equality();
+        while (true){
+            if(match(TokenType.AMPAMP)){
+                result = new ConditionalExpression(result, equality(), ConditionalExpression.Operator.AND);
+                continue;
+            }
+            break;
+        }
+        return result;
+    }
+
+    private Expression equality(){
+        Expression result = condition();
+        if(match(TokenType.EQEQ)){
+            return new ConditionalExpression(result, condition(), ConditionalExpression.Operator.EQUALS);
+        }
+        if(match(TokenType.EXCLEQ)){
+            return new ConditionalExpression(result, condition(), ConditionalExpression.Operator.NOT_EQUALS);
+        }
+        return result;
+    }
+
+    private Expression condition(){
         Expression result = additive();
         while (true){
-            if(match(TokenType.EQUALS)){
-                result = new ConditionalExpression(result, additive(), '=');
+            if(match(TokenType.LT)){
+                result = new ConditionalExpression(result, additive(), ConditionalExpression.Operator.LT);
+                continue;
+            }
+            if(match(TokenType.LTEQ)){
+                result = new ConditionalExpression(result, additive(), ConditionalExpression.Operator.LTEQ);
                 continue;
             }
 
-            else if(match(TokenType.LT)){
-                result = new ConditionalExpression(result, additive(), '<');
+             if(match(TokenType.GT)){
+                result = new ConditionalExpression(result, additive(), ConditionalExpression.Operator.GT);
+                continue;
+            }
+            if(match(TokenType.GTEQ)){
+                result = new ConditionalExpression(result, additive(), ConditionalExpression.Operator.GTEQ);
                 continue;
             }
 
-            else if(match(TokenType.GT)){
-                result = new ConditionalExpression(result, additive(), '>');
-                continue;
-            }
             break;
         }
         return result;

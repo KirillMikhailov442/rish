@@ -1,4 +1,4 @@
-package dev.ast;
+package dev.ast.values;
 
 public class StringValue implements Value{
     final String value;

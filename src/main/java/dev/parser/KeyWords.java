@@ -4,22 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KeyWords {
-    final static Map<String, String> keyWords;
+    final static Map<String, String> keywords;
 
     static  {
-        keyWords = new HashMap<>();
-        keyWords.put("INPUT", "input");
-        keyWords.put("PRINT", "print");
-        keyWords.put("IF", "if");
-        keyWords.put("ELSE", "else");
+        keywords = new HashMap<>();
+        keywords.put("INPUT", "input");
+        keywords.put("PRINT", "print");
+        keywords.put("IF", "if");
+        keywords.put("ELSE", "else");
     }
 
     public static boolean isExists(String key){
-        return keyWords.containsKey(key);
+        return keywords.containsKey(key);
     }
 
     public static String get(String key) {
         if(!isExists(key)) return null;
-        return keyWords.get(key);
+        return keywords.get(key);
     }
 }

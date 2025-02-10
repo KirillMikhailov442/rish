@@ -1,8 +1,9 @@
-package dev.ast;
+package dev.ast.expressions;
 
+import dev.ast.values.Value;
 import dev.parser.Variable;
 
-public class VariableExpression implements Expression{
+public class VariableExpression implements Expression {
     final String name;
 
     public VariableExpression(String name) {

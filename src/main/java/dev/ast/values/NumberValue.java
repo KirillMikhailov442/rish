@@ -1,4 +1,4 @@
-package dev.ast;
+package dev.ast.values;
 
 public class NumberValue implements Value {
     final double value;

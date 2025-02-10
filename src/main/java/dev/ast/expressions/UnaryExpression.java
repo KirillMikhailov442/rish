@@ -1,6 +1,9 @@
-package dev.ast;
+package dev.ast.expressions;
 
-public class UnaryExpression implements Expression{
+import dev.ast.values.NumberValue;
+import dev.ast.values.Value;
+
+public class UnaryExpression implements Expression {
     final Expression expression1;
     final char operation;
 

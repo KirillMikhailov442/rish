@@ -1,6 +1,8 @@
-package dev.ast;
+package dev.ast.statements;
 
-public class PrintStatement implements  Statement{
+import dev.ast.expressions.Expression;
+
+public class PrintStatement implements Statement {
     final Expression expression;
 
     public PrintStatement(Expression expression) {

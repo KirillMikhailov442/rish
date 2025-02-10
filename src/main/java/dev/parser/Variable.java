@@ -1,7 +1,7 @@
 package dev.parser;
 
-import dev.ast.NumberValue;
-import dev.ast.Value;
+import dev.ast.values.NumberValue;
+import dev.ast.values.Value;
 
 import java.util.HashMap;
 import java.util.Map;

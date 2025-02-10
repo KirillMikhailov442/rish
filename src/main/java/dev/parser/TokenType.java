@@ -5,10 +5,21 @@ public enum TokenType {
     PLUS,
     MINUS,
     STAR,
+    STARSTAR,
     SLASH,
     EQUALS,
+    EQEQ,
     LT,
+    LTEQ,
     GT,
+    GTEQ,
+    EXCL,
+    EXCLEQ,
+
+    BAR,
+    BARBAR,
+    AMP,
+    AMPAMP,
 
     //keywords
     PRINT,

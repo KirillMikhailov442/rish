@@ -1,8 +1,10 @@
-package dev.ast;
+package dev.ast.statements;
 
+import dev.ast.values.Value;
+import dev.ast.expressions.Expression;
 import dev.parser.Variable;
 
-public class AssignmentStatement implements  Statement{
+public class AssignmentStatement implements Statement {
 
     final String variable;
     final Expression expression;

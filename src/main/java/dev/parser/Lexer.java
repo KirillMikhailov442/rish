@@ -1,7 +1,9 @@
 package dev.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Lexer {
     final String input;
@@ -9,14 +11,36 @@ public class Lexer {
     int length;
     int position;
 
-    static final String OPERATOR_CHARS = "+-*/()=<>";
-    static final TokenType[] OPERATOR_TOKENS = {
-            TokenType.PLUS, TokenType.MINUS,
-            TokenType.STAR, TokenType.SLASH,
-            TokenType.LPAREN, TokenType.RPAREN,
-            TokenType.EQUALS, TokenType.LT,
-            TokenType.GT
-    };
+    static final String OPERATOR_CHARS = "+-*/()=<>!&|";
+
+    static final Map<String, TokenType> OPERATORS;
+    static {
+        OPERATORS = new HashMap<>();
+        OPERATORS.put("+", TokenType.PLUS);
+        OPERATORS.put("-", TokenType.MINUS);
+        OPERATORS.put("*", TokenType.STAR);
+        OPERATORS.put("/", TokenType.SLASH);
+        OPERATORS.put("(", TokenType.LPAREN);
+        OPERATORS.put(")", TokenType.RPAREN);
+        OPERATORS.put("=", TokenType.EQUALS);
+        OPERATORS.put("<", TokenType.LT);
+        OPERATORS.put(">", TokenType.GT);
+
+        OPERATORS.put("!", TokenType.EXCL);
+        OPERATORS.put("&", TokenType.AMP);
+        OPERATORS.put("|", TokenType.BAR);
+
+        OPERATORS.put("**", TokenType.STARSTAR);
+
+        OPERATORS.put("==", TokenType.EQEQ);
+        OPERATORS.put("!=", TokenType.EXCLEQ);
+        OPERATORS.put("<=", TokenType.LTEQ);
+        OPERATORS.put(">=", TokenType.GTEQ);
+
+        OPERATORS.put("&&", TokenType.AMPAMP);
+        OPERATORS.put("||", TokenType.BARBAR);
+    }
+
 
     public Lexer(String input){
         this.input = input;
@@ -110,8 +134,48 @@ public class Lexer {
     }
 
     public void tokenizeOperation(){
-        final int localPosition = OPERATOR_CHARS.indexOf(peek(0));
-        addToken(OPERATOR_TOKENS[localPosition]);
+        char current = peek();
+        if(current == '/'){
+            if(peek(1) == '/'){
+                next(2);
+                tokenizeComment();
+                return;
+            }
+            else if(peek(1) == '*'){
+                next(2);
+                tokenizeMultilineComment();
+                return;
+            }
+        }
+
+        final StringBuilder buffer = new StringBuilder();
+        while(true){
+            final String text = buffer.toString();
+            if(!OPERATORS.containsKey(text + current) && !text.isEmpty()){
+                addToken(OPERATORS.get(text));
+                return;
+            }
+            buffer.append(current);
+            current = next();
+        }
+
+    }
+
+    public void tokenizeMultilineComment(){
+        char current = peek();
+        while(true){
+            if(current == '\0') throw new RuntimeException("Missing close tag */");
+            if(current == '*' && peek(1) == '/') break;
+            current = next();
+        }
+        next(2);
+    }
+
+    public void tokenizeComment(){
+        char current = peek();
+        while("\n\r\0".indexOf(current) == -1){
+            current = next();
+        }
         next();
     }
 
@@ -120,11 +184,21 @@ public class Lexer {
         return peek(0);
     }
 
+    public char next(int relativePosition){
+        position += relativePosition;
+        return peek(relativePosition);
+    }
+
     public char peek(int relativePosition){
         final int localPosition = position + relativePosition;
 
         if(localPosition >= length) return  '\0';
         return input.charAt(localPosition);
+    }
+
+    public char peek(){
+        if(position >= length) return  '\0';
+        return input.charAt(position);
     }
 
     public void addToken(TokenType type){

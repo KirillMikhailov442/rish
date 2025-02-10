@@ -1,4 +1,8 @@
-package dev.ast;
+package dev.ast.expressions;
+
+import dev.ast.values.NumberValue;
+import dev.ast.values.StringValue;
+import dev.ast.values.Value;
 
 public class ValueExpression implements Expression {
     Value value;

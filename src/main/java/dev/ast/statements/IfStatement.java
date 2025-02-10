@@ -1,4 +1,6 @@
-package dev.ast;
+package dev.ast.statements;
+
+import dev.ast.expressions.Expression;
 
 public class IfStatement implements Statement {
     final Expression expression;

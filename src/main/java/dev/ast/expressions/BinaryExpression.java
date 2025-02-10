@@ -1,6 +1,10 @@
-package dev.ast;
+package dev.ast.expressions;
 
-public class BinaryExpression implements  Expression{
+import dev.ast.values.NumberValue;
+import dev.ast.values.StringValue;
+import dev.ast.values.Value;
+
+public class BinaryExpression implements Expression {
     final Expression expression1, expression2;
     final char operation;
 
